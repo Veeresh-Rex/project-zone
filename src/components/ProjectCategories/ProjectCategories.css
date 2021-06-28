@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+.warpper {
+    margin-left: .5rem;
+}
+
+.title_categories {
+    margin-left: 2%;
+}
+
+.categories-card {
+    padding:1% 0;
+    display: flex;
+    overflow-y:hidden;
+    overflow-x:scroll;
+    min-width:100%;
+    -ms-overflow-style: none;
+}
+
+.categories-card::-webkit-scrollbar {
+  display: none;
+}
+
+.allcard {
+    text-align: center;
+    color: white;
+    min-width: 14rem;
+    min-height: 19rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin:0 2%;
+    transition: transform .3s;
+}
+
+.allcard:hover{
+  transform: scale(1.025);
+  -webkit-box-shadow: 0 3px 5px -3px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow: 0 3px 5px -3px rgba(50, 50, 50, 0.75);
+  box-shadow: 0 3px 5px -3px rgba(50, 50, 50, 0.75);
+}
+
+.allcard .img {
+    position: relative;
+    top: 4.09rem;
+    left: 49px;
+    width: 130px;
+    height: 133px;
+}
+
+.android {
+    position: relative;
+    top: 5.4rem;
+    left: 49px;
+    width: 130px;
+    height: 133px;
+}
+
+.expbtn {
+    background-color: white;
+    border: none;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 15px;
+    color: #4D686C;
+    border-radius: 5px;
+    font-size: large;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    position: relative;
+    width: fit-content;
+    height: 30px;
+    top: 250px;
+    left: -40px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.allcard-title {
+    color: white;
+    font-size: large;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    font-size: x-large;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.allcard-title span {
+    color: white;
+    font-weight: 600;
+}
+
+.React-card {
+    background-color: #4d686c;
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.App-dev-card {
+    grid-area: 1 / 2 / 2 / 3;
+    background-color: #748621;
+}
+
+.Python-card {
+    grid-area: 1 / 3 / 2 / 4;
+    background-color: #003662;
+}
+
+.JavaScript-card {
+    grid-area: 1 / 4 / 2 / 5;
+    background-color: #423d11;
+}
+
+.Webdev-card {
+    grid-area: 1 / 5 / 2 / 6;
+    background-color: #321487;
+}
+
+@media screen and (max-width:960px)
+{
+    .allcard {
+        min-width:12rem;
+        min-height:16rem;
+    }
+    .allcard .img {
+        height: 120px;
+        top: 2rem;
+        left: 35px;
+    }
+    .android{
+        top: 2.4rem;
+        left: 35px;
+    }
+    .expbtn{
+        top: 210px;
+        left: -35px;
+    }
+}

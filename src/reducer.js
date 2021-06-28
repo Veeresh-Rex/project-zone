@@ -19,14 +19,17 @@ export const initialState = {
 
 export const actions = {
   SET_USER: 'SET_USER',
+  LOAD_USER: 'LOAD_USER',
   SET_AUTH: 'SET_AUTH',
+  REGISTER_SUCCESS: 'REGISTER_SUCCESS',
+  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   SET_QUERY: 'SET_QUERY',
   SET_PROJECT_DETAILS: 'SET_PROJECT_DETAILS',
 };
 
 const reducer = (state, action) => {
   console.log(action);
-  console.log(state)
+  console.log(state);
   switch (action.type) {
     case actions.SET_USER:
       return {

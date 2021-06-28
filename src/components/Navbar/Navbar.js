@@ -1,11 +1,22 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
-import { useDataLayerValues } from "../../datalayer";
+import React, { useState } from 'react';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import
+  {
+    AppBar,
+    Toolbar,
+    Menu,
+    MenuItem,
+    Typography,
+    useMediaQuery,
+    ListItemIcon,
+    ListItemText,
+    Button,
+  } from '@material-ui/core';
+import logo from '../Footer/icon.png';
+import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
+import { Switch as ToggleSwitch } from 'antd';
+import { useDataLayerValues } from '../../datalayer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,58 +25,279 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    flexGrow: 1,
-  },
   name: {
-    color: "#000",
-    textDecoration: "none",
-    fontSize: "calc(1.17rem + 1.25vw)",
-    fontFamily: "QuickSand",
-    fontWeight: "700",
+    fontFamily: 'Poppins',
+    color: '#fff',
+    textDecoration: 'none',
+    marginTop: 3,
+    fontSize: 'calc(1rem + 1vw)',
+    fontWeight: '700',
+    '&:hover': {
+      color: '#fff',
+    },
   },
   text: {
-    color: "#000",
-    fontFamily: "QuickSand",
+    fontFamily: 'Poppins',
+    color: '#fff',
+    textTransform: 'capitalize',
+    '&:hover': {
+      color: '#6c6be8',
+    },
+  },
+  button: {
+    color: "#fff",
+    margin: "0 3px",
+    fontWeight: "700",
+    textDecoration: "none",
+    fontFamily: "Poppins",
+    "&:hover": {
+      color: "#6c6be8",
+      backgroundColor: "#fff",
+    },
   },
 }));
 
-function Navbar() {
-  const classes = useStyles();
-  const [{ isAuthenticated, user }] = useDataLayerValues();
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={3}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
 
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    "& .MuiListItemIcon-root": {
+      minWidth: '30px'
+    },
+    "& .MuiButton-root": {
+      color: '#FFF !important'
+    },
+    "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+      color: "#5352ed"
+    },
+    "&:focus": {
+      backgroundColor: "#6c6be8",
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white,
+      },
+    },
+    '&:hover': {
+      backgroundColor: '#6c6be8',
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
+function Navbar({ themeToggler })
+{
+  const classes = useStyles();
+  const [{ isAuthenticated, user }, dispatch] = useDataLayerValues();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) =>
+  {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () =>
+  {
+    setAnchorEl(null);
+  };
+
+  // Login for Menu Handling
+  const muitheme = useTheme();
+  const isMobile = useMediaQuery(muitheme.breakpoints.down('sm'));
+  const logoutHandler = async () =>
+  {
+    localStorage.removeItem('tokken');
+    const userData = {
+      ...user,
+      fname: '',
+      lname: '',
+      email: '',
+      password: 'password',
+    };
+    dispatch({
+      type: 'SET_AUTH',
+      isAuthenticated: false,
+    });
+    dispatch({
+      type: 'SET_USER',
+      user: userData,
+    });
+  };
   return (
-    <div className="NavWithoutToggle">
+    <div>
       <AppBar
-        position="static"
-        style={{ backgroundColor: "transparent", boxShadow: "none" }}
+        position="fixed"
+        style={{ backgroundColor: '#6f6ee1', boxShadow: 'none' }}
       >
-        <Toolbar>
+        <Toolbar className="NavWithToggleSwitch">
           <div className="NavHeading">
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h4">
               <Link to="/" className={classes.name}>
+                <img src={logo} alt="logo" className="logo" />
                 Project Zone
               </Link>
             </Typography>
           </div>
-
-          {isAuthenticated ? (
-            <div className="links">
-              <Link to="/dashboard" style={{ textDecoration: "none" }}>
-                <Button className={classes.text}> Welcome {user.fname} </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="links">
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                <Button className={classes.text}>Login</Button>
-              </Link>
-            </div>
-          )}
           <div className="links">
-            <Link to="/addnew" style={{ textDecoration: "none" }}>
-              <Button className={classes.text}>add project</Button>
-            </Link>
+            {isMobile ? (
+              <>
+                <Button onClick={handleClick} color="#FFF">
+                  <MenuIcon />
+                </Button>
+                <StyledMenu
+                  id="customized-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <Link to="/" onClick={handleClose}>
+                    <StyledMenuItem>
+                      <ListItemIcon>
+                        <i className="fa fa-home"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="Home"></ListItemText>
+                    </StyledMenuItem>
+                  </Link>
+                  {isAuthenticated ?
+                    <Link to="/profile" onClick={handleClose}>
+                      <StyledMenuItem>
+                        <ListItemIcon>
+                          <i className="fa fa-user-circle-o"></i>
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={`Welcome ${ user.fname }`}
+                        ></ListItemText>
+                      </StyledMenuItem>
+                    </Link>
+                    : null}
+                  <Link to="/projects" onClick={handleClose}>
+                    <StyledMenuItem>
+                      <ListItemIcon>
+                        <i className="fa fa-file"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="Find Projects"></ListItemText>
+                    </StyledMenuItem>
+                  </Link>
+                  {!isAuthenticated ?
+                    <Link to="/login" onClick={handleClose}>
+                      <StyledMenuItem>
+                        <ListItemIcon>
+                          <i className="fa fa-sign-in"></i>
+                        </ListItemIcon>
+                        <ListItemText primary="Login/Sign up"></ListItemText>
+                      </StyledMenuItem>
+                    </Link>
+                    : null}
+                  <Link to="/about" onClick={handleClose}>
+                    <StyledMenuItem>
+                      <ListItemIcon>
+                        <i className="fa fa-users"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="About"></ListItemText>
+                    </StyledMenuItem>
+                  </Link>
+                  {isAuthenticated ?
+                    <Link to="/addnew" onClick={handleClose}>
+                      <StyledMenuItem>
+                        <ListItemIcon>
+                          <i className="fa fa-plus"></i>
+                        </ListItemIcon>
+                        <ListItemText primary="Add New Project"></ListItemText>
+                      </StyledMenuItem>
+                    </Link>
+                    : null}
+                  <Link to="/contact" onClick={handleClose}>
+                    <StyledMenuItem>
+                      <ListItemIcon>
+                        <i className="fa fa-id-badge"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="Contact Us"></ListItemText>
+                    </StyledMenuItem>
+                  </Link>
+                </StyledMenu>
+              </>
+            ) : (
+              <>
+                <div>
+                  <Button className={classes.button}>
+                    <Link to="/" className={classes.text}>
+                      <i className="fa fa-home"></i>Home
+                    </Link>
+                  </Button>
+                </div>
+                {isAuthenticated ? (
+                  <Button className={classes.button}>
+                    <Link to="/profile" className={classes.text}>
+                      <i className="fa fa-user-circle-o"></i> Welcome {user.fname}
+                    </Link>
+                  </Button>
+                ) : null}
+                <div>
+                  <Button className={classes.button}>
+                    <Link to="/about" className={classes.text}>
+                      <i className="fa fa-users"></i> About
+                    </Link>
+                  </Button>
+                </div>
+                <div>
+                  <Button className={classes.button}>
+                    <Link to="/projects" className={classes.text}>
+                      <i className="fa fa-file"></i>Find Projects
+                    </Link>
+                  </Button>
+                </div>
+                {isAuthenticated ?
+                  <div>
+                    <Button className={classes.button}>
+                      <Link to="/addnew" className={classes.text}>
+                        <i className="fa fa-plus"></i>Add New Project
+                      </Link>
+                    </Button>
+                  </div>
+                  : null}
+                <div>
+                  <Button className={classes.button}>
+                    <Link to="/contact" className={classes.text}>
+                      <i className="fa fa-id-badge"></i>Contact Us
+                    </Link>
+                  </Button>
+                </div>
+                {!isAuthenticated ? (
+                  <Link to="/login" className="lobut">
+                    <i className="fa fa-sign-in"></i>Login
+                  </Link>
+                ) : (
+                  <>
+                    <h4 className="lobut" onClick={logoutHandler}>
+                      Logout
+                    </h4>
+                  </>
+                )}
+              </>
+            )}
+            <div style={{ marginRight: '5px', marginTop: '5px' }}>
+              <ToggleSwitch
+                onClick={() => themeToggler()}
+                className="toggleBtn"
+              />
+            </div>
           </div>
         </Toolbar>
       </AppBar>
