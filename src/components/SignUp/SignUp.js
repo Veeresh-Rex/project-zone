@@ -9,7 +9,8 @@ import { magic } from "../../magic";
 import "./SignUp.css";
 import signupavatar from './../../assets/signupavatar.svg';
 import { signup } from '../../axios/instance';
-
+import { Oval } from "react-loading-icons";
+import { Helmet } from "react-helmet"; 
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,8 +29,8 @@ export default function SignUp()
 {
   const classes = useStyles();
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
   const [{ user, isAuthenticated }, dispatch] = useDataLayerValues();
-  const [loading, setLoading] = useState("");
 
   useEffect(() =>
   {
@@ -43,11 +44,16 @@ export default function SignUp()
     password: ""
   })
 
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () =>
+  {
+    setPasswordShown(!passwordShown);
+  };
+
   const handleSocialLogin = async () =>
   {
     try
     {
-      setLoading("Loading...");
 
       await magic.oauth.loginWithRedirect({
         provider: "google",
@@ -75,37 +81,44 @@ export default function SignUp()
 
   const handleSubmit = (event) =>
   {
+    setIsLoading(true);
     const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     event.preventDefault();
 
     if (firstName === "")
     {
+      setIsLoading(false);
       toast.error('Please enter your First Name');
     }
     else if (lastName === "")
     {
+      setIsLoading(false);
       toast.error('Please enter your Last Name');
     }
     else if (email === "")
     {
+      setIsLoading(false);
       toast.error('Please enter your email ');
     }
     else if (!emailTest.test(email))
     {
+      setIsLoading(false);
       toast.error('Please enter a valid email');
     }
     else if (password === "")
     {
+      setIsLoading(false);
       toast.error('Please enter a secure password');
     }
     else if (password.length < 6)
     {
+      setIsLoading(false);
       toast.error('Password should have at least 6 characters');
     }
     else
     {
       clearData();
-      setUserAuth(firstName , lastName , email , password);
+      setUserAuth(firstName, lastName, email, password);
     }
   };
 
@@ -118,9 +131,9 @@ export default function SignUp()
       password: ""
     });
   };
-  const [passwordShown] = useState(false);
 
-const setUserAuth = async (firstName, lastName, email, password) => {
+  const setUserAuth = async (firstName, lastName, email, password) =>
+  {
     const userData = {
       ...user,
       fname: firstName,
@@ -134,10 +147,14 @@ const setUserAuth = async (firstName, lastName, email, password) => {
       email: email,
       password: password,
     };
-    try {
+    try
+    {
       const res = await signup(body);
-      if (!res.data.error) {
+      if (!res.data.error)
+      {
         localStorage.setItem('tokken', res.data.accesstoken);
+
+        setIsLoading(false);
         dispatch({
           type: 'SET_AUTH',
           isAuthenticated: true,
@@ -146,23 +163,27 @@ const setUserAuth = async (firstName, lastName, email, password) => {
           type: 'SET_USER',
           user: userData,
         });
-        console.log(userData);
+
       }
-    } catch (err) {
-      if (err.response) {
-        toast.error(`${err.response.data.error}`);
+    } catch (err)
+    {
+      if (err.response)
+      {
+        setIsLoading(false);
+        toast.error(`${ err.response.data.error }`);
       }
     }
   };
 
   return (
-    <div className="signin">
+    <div className="signup">
+    <Helmet  title="Project Zone | SignUp"/>
       <div className="signupimage">
         <img src={signupavatar} alt="signupavatar" />
       </div>
       <ToastContainer position="top-right" />
-      <form className="signinform" onSubmit={handleSubmit}>
-        <h2> <span className="span_welcome"> Welcome to </span> Project Zone </h2>
+      <form className="signupform" onSubmit={handleSubmit}>
+        <h2> <span className="welcome"> Welcome to </span> Project Zone </h2>
         <div className="forminput">
           <label htmlFor="name">First Name</label>
           <input type="name" id="firstname" placeholder="Enter your First Name"
@@ -183,14 +204,24 @@ const setUserAuth = async (firstName, lastName, email, password) => {
         </div>
         <div className="forminput">
           <label htmlFor="password">Password</label>
-          <input type={passwordShown ? "text" : "password"} id="password" placeholder="Enter password"
-            name="password" value={password} onChange={handleChange} />
-
+          <input
+            type={passwordShown ? 'text' : 'password'}
+            id="password"
+            placeholder="Enter password"
+            name="password"
+            value={password}
+            onChange={handleChange}
+          />
+          <i
+            className="fa fa-eye"
+            aria-hidden="true"
+            onClick={togglePasswordVisiblity}
+          ></i>
         </div>
         <div className="btns">
-          <button type="submit" className="signup">Sign Up</button>
-          <button className="Login">
-            <RouterLink to="/login" className="signuplink" >
+          <button type="submit" className="signup-btn">Sign Up</button>
+          <button className="login-btn">
+            <RouterLink to="/login" className="loginlink" >
               Login
             </RouterLink>
           </button>

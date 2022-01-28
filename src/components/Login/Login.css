@@ -3,10 +3,9 @@
   flex-direction:row;
   align-items:center;
   justify-content:center;
-  height:100vh;
   font-family: 'Poppins', sans-serif;
+  min-height:100vh;
 }
-
 
 .loginform{
   display:flex;
@@ -19,7 +18,7 @@
   color:rgb(60, 60, 60);
   width:50%;
   max-width:50vw;
-  max-height:98vh;
+  max-height:100vh;
   margin-top:50px;
 }
 
@@ -45,19 +44,15 @@
   position: absolute;
   left:20px;
   top:0;
-  font-size: 0.7rem;
 }
 
 .forminput input{
   padding:22px 10px 10px 20px;
+  font-size:14px;
   width:30vw;
   outline:none;
   border:none;
   color:#5352ED;
-}
-
-.forminput input::placeholder {
-  color: #CCC;
 }
 
 .forminput input:focus{
@@ -67,6 +62,7 @@
 
 .remember_forgotpass{
   display:flex;
+  font-size:14px;
   width:30vw;
   justify-content:space-between;
 }
@@ -88,29 +84,38 @@
   color:#5352ED;
 }
 
+.loading_indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #5352ED;
+  font-weight: bold;
+}
+
 .btns{
   margin-top:30px;
 }
 
 .loginbtn{
-border:2px solid #5352ED;
-background-color:#5352ED;
-cursor:pointer;
-color:#fff;
-margin-right:20px;
-padding:10px 16px;
-box-shadow:-1px 3px 3px rgba(0,0,0,0.4)
+  border:2px solid #5352ED;
+  background-color:#5352ED;
+  cursor:pointer;
+  color:#FFF;
+  margin-right:20px;
+  padding:10px 16px;
+  box-shadow:-1px 3px 3px rgba(0,0,0,0.4)
 }
 
 .signupbtn{
-padding:10px 16px;
-border:2px solid #5352ED;
-background-color:#fff;
-cursor:pointer;
+  padding:10px 16px;
+  border:2px solid #5352ED;
+  background-color:#FFF;
+  cursor:pointer;
 }
 
 .signuplink,.signuplink:hover{
-color:#5352ED;
+  color:#5352ED;
 }
 
 .social_signin{
@@ -129,62 +134,80 @@ color:#5352ED;
 }
 
 .loginimage{
-  width:50%;
   max-width:50vw;
   background-color:#EAF2FD;
   padding:7%;
-  max-height:98vh;
+  max-height:100vh;
+  min-height:100vh;
+  display:flex;
   align-items:center;
+  justify-content:center;
 }
 
-.loginimage img{
-  height:100%;
-  width:100%;
+.loginimage img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  animation: pulse 3s linear infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(100%);
+  }
+  50% {
+    transform: scale(80%);
+  }
 }
 
 @media screen and (max-width:960px){
- .login{
-  margin-top:30px;
-  max-height:none;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
- } 
- .loginform h1{
-    font-size:20px;
- }
- .loginform,.loginimage{
-     font-size:14px;
-     max-height:none;
-     max-width:100vw;
-     width:100%;
-     align-items:center;
-     justify-content:center;
- }
+  .login{
+    margin-top:30px;
+    max-height:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  } 
 
- .forminput input,.remember_forgotpass{
-     width:300px;
- }
-
- .forminput{
-   margin:8px 0;
- }
-
- .loginimage image{
-  width:100%;
-  height:auto;
- }
-
- .loginbtn, .signupbtn{
-  padding:6px 12px;
- }
-
- .btns,.social_signin{
-   margin-top:10px;
- }
+  .loginform h1{
+     font-size:20px;
+  }
+  .loginform,.loginimage{
+    font-size:14px;
+    max-height:none;
+    min-height:0;
+    max-width:100vw;
+    width:100%;
+    align-items:center;
+    justify-content:center;
+  }
  
-}
+  .forminput input,
+  .remember_forgotpass {
+    font-size:12px;
+    min-width:60vw;
+    width:60%;
+  }
 
+  .forminput{
+    margin:8px 0;
+  }
+ 
+  .loginimage image{
+   width:100%;
+   height:auto;
+  }
+ 
+  .loginbtn, .signupbtn{
+   padding:6px 12px;
+  }
+ 
+  .btns,.social_signin{
+    margin-top:10px;
+  }
+  
+ }
 
 /**Remember Me Checkbox Styles ***/
 
@@ -214,7 +237,7 @@ color:#5352ED;
   left: 0;
   height: 20px;
   width: 20px;
-  border:1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .container:hover input ~ .checkmark {
@@ -222,7 +245,7 @@ color:#5352ED;
 }
 
 .container input:checked ~ .checkmark {
-  background-color: #5352ED;
+  background-color: #5352ed;
 }
 
 .checkmark:after {

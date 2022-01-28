@@ -1,3 +1,6 @@
+.contact_section canvas {
+  opacity: 0.1;
+}
 .contact__left {
   width: 40%;
   height: 100vh;
@@ -76,9 +79,9 @@
 }
 
 @media only screen and (min-width: 800px) {
-    .contact_section {
-        display: flex;
-    }
+  .contact_section {
+    display: flex;
+  }
   .contact__left {
     display: block;
     background-position: center;
@@ -86,8 +89,7 @@
   .contact__right {
     width: 60%;
   }
-
   .submitBtn {
-      width: 8rem;
+    width: 8rem;
   }
 }

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   firstname: {
@@ -18,46 +18,117 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  profile :{
-    bio : {
+  profile: {
+    bio: {
       type: String,
+      default: "",
     },
-    description : {
+    description: {
       type: String,
+      default: "",
     },
-    projects_added : [],
-    badges : [{
-      title : {
-        type: String,
-      },
-      badge_descrition : {
-        type: String,
+    projects_added: [
+      {
+        project_id:{
+          type: String
+        },
+        name:{
+          type: String,
+          default : "",
+        },
       }
-    }],
-    social_links : [{
-      github : {
-        type: String,
-      },
-      linkdin : {
-        type: String,
-      },
-      facebook : {
-        type: String,
+    ],
+    projects_liked: [],
+    projects_rated: [],
+    comments_upvoted:[],
+    followers: [
+      {
+        person_id:{
+          type: String
+        },
+        fname:{
+          type: String,
+          default : "",
+        },
       }
-    }],
-    project_stone : {
-      type : Number,
-      default : 0,
+    ],
+    following:[
+      {
+        person_id:{
+          type: String
+        },
+        fname:{
+          type: String,
+          default : "",
+        },
+      }
+    ],
+    badges: [
+      {
+        title: {
+          type: String,
+          default: "",
+        },
+        badge_description: {
+          type: String,
+          default: "",
+        },
+        earnedat: {
+          type: String,
+        },
+      },
+    ],
+    social_links: {
+      github: {
+        type: String,
+        default: "",
+      },
+      linkdin: {
+        type: String,
+        default: "",
+      },
+      facebook: {
+        type: String,
+        default: "",
+      },
     },
-    profile_pic : {
-      type : String
+    projectones: {
+      type: Number,
+      default: 0,
+    },
+    profile_pic: {
+      type: String,
     },
   },
+  password_reset_token: {
+    type: String,
+    default: "",
+  },
+  email_acctivation: {
+    email_acctivation_token: {
+      type: String,
+      default: "",
+    },
+    email_activated: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  google_signin: {
+    type: Boolean,
+    default: false,
+  },
+  messages_sent:[
+    {
+      type: String,
+      required: true
+    }
+  ],
   created_at: {
     type: String,
     required: true,
   },
 });
 
-const UserModel = mongoose.model('user', userSchema);
+const UserModel = mongoose.model("user", userSchema);
 module.exports = UserModel;
